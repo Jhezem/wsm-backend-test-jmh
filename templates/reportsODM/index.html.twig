@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReportsController!
+{% endblock %}
+
+{% block body %}
+ <section class="container reports">
+   <div class="row">
+     <div class="col">
+       <h6 class="text-left">Please enter the Account ID you'd like to display:</h6>
+     </div>
+   </div>
+   <div class="row">
+     <form method="post" action="{{ path('reportsodm') }}">
+       <div class="form-group">
+         <input name="id" id="accountId" type="text" value="" placeholder="ACCOUNT id">
+       </div>
+       <div class="form-group">
+         <button class="btn-submit btn-success" name="One" type="submit">GET DATA</button>
+         <button class="btn-submit btn-success" name="All" type="submit" value="SHOW ALL">SHOW ALL</button>
+       </div>
+     </form>
+   </div>
+   <div class="row">
+     <div class="col">
+      {% if datos %}
+       <table class="table">
+       <caption style="caption-side:top;">Aggregated performance for All <span style="font-weight:900;">ACTIVE</span> accounts listed below:</caption>
+         <thead>
+           <tr>
+             
+             <th scope="col">Account ID</th>
+             <th scope="col">Spend</th>
+             <th scope="col">Clicks</th>
+             <th scope="col">Impressions</th>
+             <th scope="col">Cost per Click</th>
+           </tr>
+         </thead>
+         <tbody>
+         {% for dato in datos %}
+         <tr>
+             
+             <td>{{ dato["_id"] }}</td>
+             <td>{{ dato["spend"] }}</td>
+             <td>{{ dato["clicks"] }}</td>
+             <td>{{ dato["impressions"] }}</td>
+             
+           </tr>
+         {% endfor %}
+         </tbody>
+       </table>
+       {% else %}
+       <h6 class="text-left">Oopss! It looks like there's no data for the provided Account Id</h6>
+      {% endif %}
+     </div>
+   </div>
+ </section>
+{% endblock %}

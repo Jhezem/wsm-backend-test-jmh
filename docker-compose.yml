@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    environment:
+      SERVICE_NAME: app
+      PHP_IDE_CONFIG: "serverName=localhost"
+    networks:
+      - app_network
+
+
+  nginx:
+    build:
+      context: ./docker-nginx/.
+    volumes:
+    - "./public:/usr/src/app/public"
+    environment:
+      NGINX_FPM_HOST: app
+      NGINX_ROOT: /usr/src/app/public
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - app_network
+
+
+networks:
+  app_network:
+    driver: bridge
